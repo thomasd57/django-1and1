@@ -1,0 +1,87 @@
+--- setup.py	2017-10-03 01:52:02.000000000 -0400
++++ /kunden/homepages/32/d377917679/htdocs/build/Python-3.6.3/setup.py	2018-01-22 14:23:23.071041205 -0500
+@@ -811,9 +811,9 @@
+         exts.append( Extension('_socket', ['socketmodule.c'],
+                                depends = ['socketmodule.h']) )
+         # Detect SSL support for the socket module (via _ssl)
++        SSL = os.path.join(os.environ['HOME'], 'install/openssl-1.1.0e')
+         search_for_ssl_incs_in = [
+-                              '/usr/local/ssl/include',
+-                              '/usr/contrib/ssl/include/'
++                os.path.join(SSL, 'include'),
+                              ]
+         ssl_incs = find_file('openssl/ssl.h', inc_dirs,
+                              search_for_ssl_incs_in
+@@ -824,16 +824,16 @@
+             if krb5_h:
+                 ssl_incs += krb5_h
+         ssl_libs = find_library_file(self.compiler, 'ssl',lib_dirs,
+-                                     ['/usr/local/ssl/lib',
+-                                      '/usr/contrib/ssl/lib/'
++                                     [ os.path.join(SSL, 'lib') 
+                                      ] )
+ 
+         if (ssl_incs is not None and
+             ssl_libs is not None):
+             exts.append( Extension('_ssl', ['_ssl.c'],
+-                                   include_dirs = ssl_incs,
+-                                   library_dirs = ssl_libs,
+-                                   libraries = ['ssl', 'crypto'],
++                                   library_dirs = [],
++                                   extra_link_args = [ os.path.join(SSL, 'lib/libssl.a'),
++                                                       os.path.join(SSL, 'lib/libcrypto.a'),
++                                                       '-ldl'],
+                                    depends = ['socketmodule.h']), )
+         else:
+             missing.append('_ssl')
+@@ -873,8 +873,11 @@
+                 exts.append( Extension('_hashlib', ['_hashopenssl.c'],
+                                        depends = ['hashlib.h'],
+                                        include_dirs = ssl_incs,
+-                                       library_dirs = ssl_libs,
+-                                       libraries = ['ssl', 'crypto']) )
++                                       library_dirs = [],
++                                       extra_link_args = [ os.path.join(SSL, 'lib/libssl.a'),
++                                                           os.path.join(SSL, 'lib/libcrypto.a'),
++                                                         '-ldl'],
++                                       ) )
+             else:
+                 print("warning: openssl 0x%08x is too old for _hashlib" %
+                       openssl_ver)
+@@ -1130,14 +1133,9 @@
+ 
+         # We hunt for #define SQLITE_VERSION "n.n.n"
+         # We need to find >= sqlite version 3.0.8
++        SQLITE = os.path.join(os.environ['HOME'], 'install/sqlite3.21')
+         sqlite_incdir = sqlite_libdir = None
+-        sqlite_inc_paths = [ '/usr/include',
+-                             '/usr/include/sqlite',
+-                             '/usr/include/sqlite3',
+-                             '/usr/local/include',
+-                             '/usr/local/include/sqlite',
+-                             '/usr/local/include/sqlite3',
+-                             ]
++        sqlite_inc_paths = [ os.path.join(SQLITE, 'include') ]
+         if cross_compiling:
+             sqlite_inc_paths = []
+         MIN_SQLITE_VERSION_NUMBER = (3, 0, 8)
+@@ -1223,6 +1221,7 @@
+             else:
+                 sqlite_extra_link_args = ()
+ 
++            sqlite_extra_link_args = ( os.path.join(SQLITE, 'lib/sqlite3.o'), )
+             include_dirs = ["Modules/_sqlite"]
+             # Only include the directory where sqlite was found if it does
+             # not already exist in set include directories, otherwise you
+@@ -1235,9 +1234,9 @@
+             exts.append(Extension('_sqlite3', sqlite_srcs,
+                                   define_macros=sqlite_defines,
+                                   include_dirs=include_dirs,
+-                                  library_dirs=sqlite_libdir,
++                                  library_dirs=[],
+                                   extra_link_args=sqlite_extra_link_args,
+-                                  libraries=["sqlite3",]))
++                                  ))
+         else:
+             missing.append('_sqlite3')
+ 

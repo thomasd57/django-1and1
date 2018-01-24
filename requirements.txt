@@ -1,0 +1,4 @@
+Django==2.0.1
+django-fastcgi-server==0.1
+flup6==1.1.1
+pytz==2017.3

@@ -1,0 +1,8 @@
+AddHandler cgi-script .fcgi
+RewriteEngine on
+RewriteBase /
+# Set up static content redirect:
+# RewriteRule static/(.+)$ static/$1  [L,NC]
+# The following two lines are for FastCGI:
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(.*)$ application.fcgi/$1 [QSA,L]
