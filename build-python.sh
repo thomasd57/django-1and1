@@ -3,9 +3,9 @@
 # This script build python 3.6.3 with openssl and sqlite3
 # Change build and install directories to your liking
 here=$PWD
-mkdir install
+mkdir -p install
 install=$(realpath install)
-mkdir build
+mkdir -p build
 cd build
 
 openssl=openssl-1.1.0e
