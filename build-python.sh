@@ -39,11 +39,10 @@ make install
 tar -zxf $python.tgz
 cd $python
 export SSL_DIR=$install/$openssl
-export SQLITE_DIR=$install/sqlite
+export SQLITE_DIR=$install/$sqlite
 patch setup.py $here/setup.py.patch
 ln -s $install/$openssl/include/openssl
 configure --prefix=$install/python3.6.3
 make
 make install
 ) |& tee python.log
-
