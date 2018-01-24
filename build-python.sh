@@ -42,5 +42,5 @@ ln -s $install/$openssl/include/openssl
 configure --prefix=$install/python3.6.3
 make
 make install
-) |& python.log
+) |& tee python.log
 
