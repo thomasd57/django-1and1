@@ -17,7 +17,7 @@ wget https://www.python.org/ftp/python/3.6.3/$python.tgz
 
 # openssl
 (
-tar -zxvf $openssl.tar.gz
+tar -zxf $openssl.tar.gz
 cd openssl-1.1.0e
 config --prefix=$install/$openssl
 make
@@ -26,7 +26,7 @@ make install
 
 # sqlite3
 (
-tar -zxvf $sqlite.tar.gz
+tar -zxf $sqlite.tar.gz
 cd $sqlite
 configure --prefix=$install/$sqlite
 make
@@ -35,8 +35,10 @@ make install
 
 # python3.6.3
 (
-tar -zxvf $python.tgz
+tar -zxf $python.tgz
 cd $python
+export SSL_DIR=$install/$openssl
+export SQLITE_DIR=$install/sqlite
 patch setup.py ../setup.py.patch
 ln -s $install/$openssl/include/openssl
 configure --prefix=$install/python3.6.3

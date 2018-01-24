@@ -1,10 +1,10 @@
 --- setup.py	2017-10-03 01:52:02.000000000 -0400
-+++ /kunden/homepages/32/d377917679/htdocs/build/Python-3.6.3/setup.py	2018-01-22 14:23:23.071041205 -0500
++++ /patched/setup.py	2018-01-22 14:23:23.071041205 -0500
 @@ -811,9 +811,9 @@
          exts.append( Extension('_socket', ['socketmodule.c'],
                                 depends = ['socketmodule.h']) )
          # Detect SSL support for the socket module (via _ssl)
-+        SSL = os.path.join(os.environ['HOME'], 'install/openssl-1.1.0e')
++        SSL = os.environ['SSL_DIR'] 
          search_for_ssl_incs_in = [
 -                              '/usr/local/ssl/include',
 -                              '/usr/contrib/ssl/include/'
@@ -52,7 +52,7 @@
  
          # We hunt for #define SQLITE_VERSION "n.n.n"
          # We need to find >= sqlite version 3.0.8
-+        SQLITE = os.path.join(os.environ['HOME'], 'install/sqlite3.21')
++        SQLITE = os.environ['SQLITE_DIR']
          sqlite_incdir = sqlite_libdir = None
 -        sqlite_inc_paths = [ '/usr/include',
 -                             '/usr/include/sqlite',
