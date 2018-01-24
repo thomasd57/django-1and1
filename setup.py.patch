@@ -69,7 +69,7 @@
              else:
                  sqlite_extra_link_args = ()
  
-+            sqlite_extra_link_args = ( os.path.join(SQLITE, 'lib/sqlite3.o'), )
++            sqlite_extra_link_args = ( os.path.join(SQLITE, 'lib/libsqlite3.a'), )
              include_dirs = ["Modules/_sqlite"]
              # Only include the directory where sqlite was found if it does
              # not already exist in set include directories, otherwise you
